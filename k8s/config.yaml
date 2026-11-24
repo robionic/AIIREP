@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aiirep-config
+  namespace: aiirep
+data:
+  CORS_ORIGINS: "https://aiirep.example.com"
+  STORAGE_PATH: "/data/uploads"
+  NEXT_PUBLIC_API_URL: "https://api.aiirep.example.com"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aiirep-secrets
+  namespace: aiirep
+type: Opaque
+stringData:
+  DATABASE_URL: "postgresql+psycopg://USER:REPLACE_ME@postgres.example.com:5432/aiirep"
+  REDIS_URL: "redis://redis.example.com:6379/0"

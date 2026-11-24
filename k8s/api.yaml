@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aiirep-api
+  namespace: aiirep
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: aiirep-api
+  template:
+    metadata:
+      labels:
+        app: aiirep-api
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/example/aiirep-api:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: aiirep-config
+            - secretRef:
+                name: aiirep-secrets
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          volumeMounts:
+            - name: media
+              mountPath: /data/uploads
+      volumes:
+        - name: media
+          persistentVolumeClaim:
+            claimName: aiirep-media
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aiirep-api
+  namespace: aiirep
+spec:
+  selector:
+    app: aiirep-api
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: aiirep-media
+  namespace: aiirep
+spec:
+  accessModes: [ReadWriteMany]
+  resources:
+    requests:
+      storage: 100Gi

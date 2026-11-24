@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aiirep-frontend
+  namespace: aiirep
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: aiirep-frontend
+  template:
+    metadata:
+      labels:
+        app: aiirep-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/example/aiirep-frontend:latest
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aiirep-frontend
+  namespace: aiirep
+spec:
+  selector:
+    app: aiirep-frontend
+  ports:
+    - port: 3000
+      targetPort: 3000
