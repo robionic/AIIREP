@@ -2,6 +2,10 @@
 
 A modular engineering workspace for ingesting machine video references, organizing analysis assets, correcting component/mechanism findings, and releasing only engineer-approved digital twins.
 
+## License and third-party materials
+
+The MIT license applies to original code and materials created for this repository. Third-party assets, data, dependencies, and model weights retain their own licenses and notices; the repository's MIT license does not relicense them. Review upstream terms before redistributing dependencies or generated model outputs.
+
 > **Implementation status:** this repository is a runnable foundation, not a production-ready industrial AI deployment. It includes a working FastAPI review/release API, a Next.js reviewer workspace, persistent relational records, audit events, a local development stack, and CI/deployment templates. It does **not** include trained detection/segmentation models, a video-host acquisition adapter, production identity management, or validated CAD/STEP generation. AI results must not be used for safety decisions until those integrations and engineering validation are implemented and qualified.
 
 ## Architecture
